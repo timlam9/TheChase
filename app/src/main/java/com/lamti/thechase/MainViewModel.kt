@@ -48,6 +48,12 @@ class MainViewModel : ViewModel() {
             it.copy(hostAction = action)
         }
     }
+
+    fun navigateBack() {
+        _uiState.update {
+            UiState()
+        }
+    }
 }
 
 data class UiState(

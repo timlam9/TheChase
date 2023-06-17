@@ -47,4 +47,13 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (viewModel.uiState.value.screen != UiState.Screen.HOME_SCREEN) {
+            viewModel.navigateBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
