@@ -35,7 +35,7 @@ fun HostScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "The Chase", style = MaterialTheme.typography.headlineLarge)
-            Text(text = "Choose your answer: ")
+            Text(text = "Choose action: ")
         }
         AnswerButton(title = "Start Game", color = Color.DarkGray, onClick = { onHostActionClick("start") })
         AnswerButton(title = "Show Answer", color = Color.DarkGray, onClick = { onHostActionClick("show_answer") })
