@@ -1,39 +1,58 @@
 package com.lamti.thechase
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.lamti.thechase.data.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val repository: Repository = Repository()) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
     fun onHostClick() {
-        _uiState.update {
-            it.copy(
-                screen = UiState.Screen.HOST_SCREEN,
-                user = UiState.User.HOST
-            )
+        viewModelScope.launch {
+            val token = repository.login("host@gmail.com", "password")
+            Log.d("LOGIN", "Token: $token")
+
+            _uiState.update {
+                it.copy(
+                    screen = UiState.Screen.HOST_SCREEN,
+                    user = UiState.User.HOST
+                )
+            }
         }
     }
 
     fun onPlayerClick() {
-        _uiState.update {
-            it.copy(
-                screen = UiState.Screen.ANSWER_SCREEN,
-                user = UiState.User.PLAYER
-            )
+        viewModelScope.launch {
+            val token = repository.login("player@gmail.com", "password")
+            Log.d("LOGIN", "Token: $token")
+
+            _uiState.update {
+                it.copy(
+                    screen = UiState.Screen.ANSWER_SCREEN,
+                    user = UiState.User.PLAYER
+                )
+            }
         }
     }
 
     fun onChaserClick() {
-        _uiState.update {
-            it.copy(
-                screen = UiState.Screen.ANSWER_SCREEN,
-                user = UiState.User.CHASER
-            )
+        viewModelScope.launch {
+            val token = repository.login("chaser@gmail.com", "password")
+            Log.d("LOGIN", "Token: $token")
+
+            _uiState.update {
+                it.copy(
+                    screen = UiState.Screen.ANSWER_SCREEN,
+                    user = UiState.User.CHASER
+                )
+            }
         }
     }
 
