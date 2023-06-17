@@ -7,60 +7,68 @@ import kotlinx.coroutines.flow.update
 
 class MainViewModel : ViewModel() {
 
-    private val _state = MutableStateFlow(State())
-    val state = _state.asStateFlow()
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.asStateFlow()
 
     fun onHostClick() {
-        _state.update {
+        _uiState.update {
             it.copy(
-                screen = Screen.HOST_SCREEN,
-                user = User.HOST
+                screen = UiState.Screen.HOST_SCREEN,
+                user = UiState.User.HOST
             )
         }
     }
 
     fun onPlayerClick() {
-        _state.update {
+        _uiState.update {
             it.copy(
-                screen = Screen.ANSWER_SCREEN,
-                user = User.PLAYER
+                screen = UiState.Screen.ANSWER_SCREEN,
+                user = UiState.User.PLAYER
             )
         }
     }
 
     fun onChaserClick() {
-        _state.update {
+        _uiState.update {
             it.copy(
-                screen = Screen.ANSWER_SCREEN,
-                user = User.CHASER
+                screen = UiState.Screen.ANSWER_SCREEN,
+                user = UiState.User.CHASER
             )
         }
     }
 
     fun onAnswerClick(answer: String) {
-        _state.update {
+        _uiState.update {
             it.copy(answer = answer)
+        }
+    }
+
+    fun onHostActionClick(action: String) {
+        _uiState.update {
+            it.copy(hostAction = action)
         }
     }
 }
 
-data class State(
+data class UiState(
     val screen: Screen = Screen.HOME_SCREEN,
     val user: User = User.NONE,
-    val answer: String = ""
-)
+    val answer: String = "",
+    val hostAction: String = ""
+) {
 
-enum class Screen {
+    enum class Screen {
 
-    HOME_SCREEN,
-    HOST_SCREEN,
-    ANSWER_SCREEN
-}
+        HOME_SCREEN,
+        HOST_SCREEN,
+        ANSWER_SCREEN
+    }
 
-enum class User {
+    enum class User {
 
-    HOST,
-    PLAYER,
-    CHASER,
-    NONE
+        HOST,
+        PLAYER,
+        CHASER,
+        NONE
+    }
 }

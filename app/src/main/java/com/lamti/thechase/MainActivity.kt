@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.lamti.thechase.ui.AnswerScreen
 import com.lamti.thechase.ui.HomeScreen
+import com.lamti.thechase.ui.HostScreen
 import com.lamti.thechase.ui.theme.TheChaseTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,10 +24,10 @@ class MainActivity : ComponentActivity() {
             TheChaseTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
 
-                    val state by viewModel.state.collectAsState()
+                    val state by viewModel.uiState.collectAsState()
 
                     when (state.screen) {
-                        Screen.HOME_SCREEN -> {
+                        UiState.Screen.HOME_SCREEN -> {
                             HomeScreen(
                                 onHostClick = viewModel::onHostClick,
                                 onPlayerClick = viewModel::onPlayerClick,
@@ -34,11 +35,11 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        Screen.HOST_SCREEN -> {
-
+                        UiState.Screen.HOST_SCREEN -> {
+                            HostScreen(viewModel::onHostActionClick)
                         }
 
-                        Screen.ANSWER_SCREEN -> {
+                        UiState.Screen.ANSWER_SCREEN -> {
                             AnswerScreen(state.user, viewModel::onAnswerClick)
                         }
                     }

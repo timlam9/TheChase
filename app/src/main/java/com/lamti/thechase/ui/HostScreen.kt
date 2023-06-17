@@ -14,25 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lamti.thechase.UiState
 import com.lamti.thechase.ui.components.AnswerButton
 import com.lamti.thechase.ui.theme.TheChaseTheme
 
 @Composable
-fun AnswerScreen(
-    user: UiState.User = UiState.User.NONE,
-    onAnswerClick: (answer: String) -> Unit = {}
+fun HostScreen(
+    onHostActionClick: (answer: String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                when (user) {
-                    UiState.User.PLAYER -> Color.Blue
-                    UiState.User.CHASER -> Color.Red
-                    else -> MaterialTheme.colorScheme.background
-                }
-            )
+            .background(Color.Black)
             .padding(20.dp),
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -45,16 +37,17 @@ fun AnswerScreen(
             Text(text = "The Chase", style = MaterialTheme.typography.headlineLarge)
             Text(text = "Choose your answer: ")
         }
-        AnswerButton(title = "A", color = Color.Black, onClick = { onAnswerClick("A") })
-        AnswerButton(title = "B", color = Color.Black, onClick = { onAnswerClick("B") })
-        AnswerButton(title = "C", color = Color.Black, onClick = { onAnswerClick("C") })
+        AnswerButton(title = "Start Game", color = Color.DarkGray, onClick = { onHostActionClick("start") })
+        AnswerButton(title = "Show Answer", color = Color.DarkGray, onClick = { onHostActionClick("show_answer") })
+        AnswerButton(title = "Update Board", color = Color.DarkGray, onClick = { onHostActionClick("update_board") })
+        AnswerButton(title = "Next Question", color = Color.DarkGray, onClick = { onHostActionClick("next_question") })
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun AnswerScreenPreview() {
+fun HostScreenPreview() {
     TheChaseTheme {
-        AnswerScreen()
+        HostScreen()
     }
 }
