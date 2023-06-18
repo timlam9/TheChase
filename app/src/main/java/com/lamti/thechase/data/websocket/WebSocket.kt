@@ -32,21 +32,25 @@ class WebSocket(
 
         CoroutineScope(dispatcher + socketConnectJob).launch {
             supervisorScope {
-                client.webSocket(
-                    method = HttpMethod.Get,
-                    host = "192.168.1.101",
-                    port = 8080,
-                    path = "/thechase",
-                    request = { header("Authorization", "Bearer $token") }
-                ) {
-                    Log.d("SOCKET", "Connection opened.")
-                    webSocketSession = this
-                    sendMessage(SocketMessage.OutBound.Connect(email = email))
+                try {
+                    client.webSocket(
+                        method = HttpMethod.Get,
+                        host = "192.168.1.101",
+                        port = 8080,
+                        path = "/thechase",
+                        request = { header("Authorization", "Bearer $token") }
+                    ) {
+                        Log.d("SOCKET", "Connection opened.")
+                        webSocketSession = this
+                        sendMessage(SocketMessage.OutBound.Connect(email = email))
 
-                    val messagesReceivedRoutine = launch {
-                        observeSocketMessages()
+                        val messagesReceivedRoutine = launch {
+                            observeSocketMessages()
+                        }
+                        messagesReceivedRoutine.join()
                     }
-                    messagesReceivedRoutine.join()
+                } catch (e: Exception) {
+                    Log.d("LOGIN", "Web socket error: ${e.localizedMessage}")
                 }
             }
         }

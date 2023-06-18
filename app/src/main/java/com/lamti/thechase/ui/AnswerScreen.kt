@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
@@ -45,9 +46,9 @@ fun AnswerScreen(
             Text(text = "The Chase", style = MaterialTheme.typography.headlineLarge)
             Text(text = "Choose your answer: ")
         }
-        AnswerButton(title = "A", color = Color.Black, onClick = { onAnswerClick("A") })
-        AnswerButton(title = "B", color = Color.Black, onClick = { onAnswerClick("B") })
-        AnswerButton(title = "C", color = Color.Black, onClick = { onAnswerClick("C") })
+        AnswerButton(modifier = Modifier.fillMaxWidth(), title = "A", color = Color.Black, onClick = { onAnswerClick("A") })
+        AnswerButton(modifier = Modifier.fillMaxWidth(), title = "B", color = Color.Black, onClick = { onAnswerClick("B") })
+        AnswerButton(modifier = Modifier.fillMaxWidth(), title = "C", color = Color.Black, onClick = { onAnswerClick("C") })
     }
 }
 

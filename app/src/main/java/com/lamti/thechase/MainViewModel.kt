@@ -87,8 +87,11 @@ class MainViewModel(
                 SocketMessage.OutBound.HostAction(
                     action = when (action) {
                         "start" -> GameAction.START
-                        "show_answer" -> GameAction.SHOW_ANSWER
-                        "update_board" -> GameAction.UPDATE_BOARD
+                        "show_player_answer" -> GameAction.SHOW_PLAYER_ANSWER
+                        "show_chaser_answer" -> GameAction.SHOW_CHASER_ANSWER
+                        "show_right_answer" -> GameAction.SHOW_RIGHT_ANSWER
+                        "move_player" -> GameAction.MOVE_PLAYER
+                        "move_chaser" -> GameAction.MOVE_CHASER
                         else -> GameAction.NEXT_QUESTION
                     }
                 )
