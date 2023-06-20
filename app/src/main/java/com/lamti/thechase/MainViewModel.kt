@@ -8,6 +8,7 @@ import com.lamti.thechase.data.websocket.GameAction
 import com.lamti.thechase.data.websocket.GameQuestionOption
 import com.lamti.thechase.data.websocket.SocketMessage
 import com.lamti.thechase.data.websocket.WebSocket
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,9 +24,12 @@ class MainViewModel(
 
     fun onHostClick() {
         viewModelScope.launch {
-            val token = repository.login("host@gmail.com", "password")
-            socket.openConnection(token, "host@gmail.com")
-            Log.d("LOGIN", "Token: $token")
+            val email = "host@gmail.com"
+            val token = async { repository.login(email, "password") }
+            val tokenResult = token.await()
+            Log.d("LOGIN", "Token: $tokenResult")
+
+            socket.openConnection(tokenResult, email)
 
             _uiState.update {
                 it.copy(
@@ -33,14 +37,18 @@ class MainViewModel(
                     user = UiState.User.HOST
                 )
             }
+            Log.d("LOGIN", "State: $_uiState")
         }
     }
 
     fun onPlayerClick() {
         viewModelScope.launch {
-            val token = repository.login("player@gmail.com", "password")
-            socket.openConnection(token, "player@gmail.com")
-            Log.d("LOGIN", "Token: $token")
+            val email = "player@gmail.com"
+            val token = async { repository.login(email, "password") }
+            val tokenResult = token.await()
+            Log.d("LOGIN", "Token: $tokenResult")
+
+            socket.openConnection(tokenResult, email)
 
             _uiState.update {
                 it.copy(
@@ -53,9 +61,12 @@ class MainViewModel(
 
     fun onChaserClick() {
         viewModelScope.launch {
-            val token = repository.login("chaser@gmail.com", "password")
-            socket.openConnection(token, "chaser@gmail.com")
-            Log.d("LOGIN", "Token: $token")
+            val email = "chaser@gmail.com"
+            val token = async { repository.login(email, "password") }
+            val tokenResult = token.await()
+            Log.d("LOGIN", "Token: $tokenResult")
+
+            socket.openConnection(tokenResult, email)
 
             _uiState.update {
                 it.copy(
