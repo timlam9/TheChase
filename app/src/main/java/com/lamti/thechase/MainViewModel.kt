@@ -92,7 +92,7 @@ class MainViewModel(
         }
     }
 
-    fun onHostActionClick(action: String) {
+    fun onHostActionClick(action: String, questionID: Int? = null) {
         viewModelScope.launch {
             socket.sendMessage(
                 SocketMessage.OutBound.HostAction(
@@ -104,7 +104,8 @@ class MainViewModel(
                         "move_player" -> GameAction.MOVE_PLAYER
                         "move_chaser" -> GameAction.MOVE_CHASER
                         else -> GameAction.NEXT_QUESTION
-                    }
+                    },
+                    questionID = questionID
                 )
             )
         }

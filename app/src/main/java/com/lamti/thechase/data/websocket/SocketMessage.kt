@@ -16,6 +16,7 @@ sealed class SocketMessage {
 
         data class HostAction(
             val type: String = "host_action",
+            val questionID: Int? = null,
             val action: GameAction
         ) : OutBound()
     }

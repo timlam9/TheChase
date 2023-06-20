@@ -11,21 +11,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lamti.thechase.ui.components.AnswerButton
+import com.lamti.thechase.ui.components.TextBox
 import com.lamti.thechase.ui.theme.TheChaseTheme
 
 @Composable
-fun HostScreen(
-    onHostActionClick: (answer: String) -> Unit = {}
-) {
+fun HostScreen(onHostActionClick: (answer: String, question: Int?) -> Unit = { _, _ -> }) {
+    var questionID by remember { mutableStateOf("null") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,17 +42,18 @@ fun HostScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "The Chase", style = MaterialTheme.typography.headlineLarge)
-            Text(text = "Choose action: ")
+            TextBox(text = questionID, label = "question id") {
+                questionID = it
+            }
             Spacer(modifier = Modifier.size(20.dp))
         }
         AnswerButton(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            title = "Start Game",
+            title = "Go to Question $questionID",
             color = Color.DarkGray,
-            onClick = { onHostActionClick("start") })
+            onClick = { onHostActionClick("start", questionID.toIntOrNull()) })
         Row(
             modifier = Modifier
                 .weight(1f)
@@ -64,9 +68,9 @@ fun HostScreen(
                 title = "Show Player Answer",
                 padding = 10.dp,
                 color = Color.Blue,
-                onClick = { onHostActionClick("show_player_answer") }
+                onClick = { onHostActionClick("show_player_answer", null) }
             )
-            Spacer(modifier = Modifier.size(20.dp))
+            Spacer(modifier = Modifier.size(10.dp))
             AnswerButton(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -74,9 +78,9 @@ fun HostScreen(
                 title = "Show Right Answer",
                 padding = 10.dp,
                 color = Color.Green,
-                onClick = { onHostActionClick("show_right_answer") }
+                onClick = { onHostActionClick("show_right_answer", null) }
             )
-            Spacer(modifier = Modifier.size(20.dp))
+            Spacer(modifier = Modifier.size(10.dp))
             AnswerButton(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -84,7 +88,7 @@ fun HostScreen(
                 title = "Show Chaser Answer",
                 padding = 10.dp,
                 color = Color.Red,
-                onClick = { onHostActionClick("show_chaser_answer") }
+                onClick = { onHostActionClick("show_chaser_answer", null) }
             )
         }
         Row(
@@ -101,9 +105,9 @@ fun HostScreen(
                 title = "Move Player",
                 padding = 10.dp,
                 color = Color.Blue,
-                onClick = { onHostActionClick("move_player") }
+                onClick = { onHostActionClick("move_player", null) }
             )
-            Spacer(modifier = Modifier.size(20.dp))
+            Spacer(modifier = Modifier.size(10.dp))
             AnswerButton(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -111,7 +115,7 @@ fun HostScreen(
                 title = "Move Chaser",
                 padding = 10.dp,
                 color = Color.Red,
-                onClick = { onHostActionClick("move_chaser") }
+                onClick = { onHostActionClick("move_chaser", null) }
             )
         }
         AnswerButton(
@@ -120,7 +124,7 @@ fun HostScreen(
                 .fillMaxWidth(),
             title = "Next Question",
             color = Color.DarkGray,
-            onClick = { onHostActionClick("next_question") })
+            onClick = { onHostActionClick("next_question", null) })
     }
 }
 
