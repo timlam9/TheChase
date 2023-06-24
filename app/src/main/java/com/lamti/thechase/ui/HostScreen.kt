@@ -105,7 +105,8 @@ fun HostScreen(onHostActionClick: (answer: String, question: Int?) -> Unit = { _
                 title = "Move Player",
                 padding = 10.dp,
                 color = Color.Blue,
-                onClick = { onHostActionClick("move_player", null) }
+                onLongClick = { onHostActionClick("move_player_back", null) },
+                onClick = { onHostActionClick("move_player", null) },
             )
             Spacer(modifier = Modifier.size(10.dp))
             AnswerButton(
@@ -115,6 +116,7 @@ fun HostScreen(onHostActionClick: (answer: String, question: Int?) -> Unit = { _
                 title = "Move Chaser",
                 padding = 10.dp,
                 color = Color.Red,
+                onLongClick = { onHostActionClick("move_chaser_back", null) },
                 onClick = { onHostActionClick("move_chaser", null) }
             )
         }

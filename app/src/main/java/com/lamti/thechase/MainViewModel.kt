@@ -102,7 +102,9 @@ class MainViewModel(
                         "show_chaser_answer" -> GameAction.SHOW_CHASER_ANSWER
                         "show_right_answer" -> GameAction.SHOW_RIGHT_ANSWER
                         "move_player" -> GameAction.MOVE_PLAYER
+                        "move_player_back" -> GameAction.MOVE_PLAYER_BACK
                         "move_chaser" -> GameAction.MOVE_CHASER
+                        "move_chaser_back" -> GameAction.MOVE_CHASER_BACK
                         else -> GameAction.NEXT_QUESTION
                     },
                     questionID = questionID
