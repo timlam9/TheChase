@@ -1,26 +1,37 @@
-package com.lamti.thechase
+package com.lamti.thechase.activity
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lamti.thechase.activity.MainView.UiState
 import com.lamti.thechase.data.Repository
+import com.lamti.thechase.data.models.ChaseSoundEvent
 import com.lamti.thechase.data.websocket.GameAction
-import com.lamti.thechase.data.websocket.GameQuestionOption
 import com.lamti.thechase.data.websocket.SocketMessage
 import com.lamti.thechase.data.websocket.WebSocket
+import com.lamti.thechase.toEmail
+import com.lamti.thechase.toPosition
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+internal class MainViewModel(
     private val repository: Repository = Repository(),
     private val socket: WebSocket = WebSocket()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
+
+    val socketSoundEvents: SharedFlow<ChaseSoundEvent> = socket.socketSoundEvents.shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed()
+    )
 
     fun onHostClick() {
         viewModelScope.launch {
@@ -122,18 +133,5 @@ class MainViewModel(
             UiState()
         }
         socket.closeWebSocket()
-    }
-
-    private fun UiState.User.toEmail() = when (this) {
-        UiState.User.HOST -> "host@gmail.com"
-        UiState.User.PLAYER -> "player@gmail.com"
-        UiState.User.CHASER -> "chaser@gmail.com"
-        UiState.User.NONE -> ""
-    }
-
-    private fun String.toPosition() = when (this) {
-        "A" -> GameQuestionOption.Position.A
-        "B" -> GameQuestionOption.Position.B
-        else -> GameQuestionOption.Position.C
     }
 }

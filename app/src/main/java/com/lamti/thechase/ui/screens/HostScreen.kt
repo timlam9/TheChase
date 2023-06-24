@@ -1,4 +1,4 @@
-package com.lamti.thechase.ui
+package com.lamti.thechase.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

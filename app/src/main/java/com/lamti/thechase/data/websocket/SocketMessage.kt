@@ -1,5 +1,7 @@
 package com.lamti.thechase.data.websocket
 
+import com.lamti.thechase.data.models.ChaseSoundEvent
+
 sealed class SocketMessage {
 
     sealed class OutBound: SocketMessage() {
@@ -24,6 +26,8 @@ sealed class SocketMessage {
     sealed class InBound: SocketMessage() {
 
         data class SocketError(val type: String = "socket_error", val errorType: String) : InBound()
+
+        data class Event(val type: String = "event", val event: ChaseSoundEvent) : InBound()
     }
 }
 
