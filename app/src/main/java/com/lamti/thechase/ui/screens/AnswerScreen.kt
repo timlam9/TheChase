@@ -46,9 +46,30 @@ internal fun AnswerScreen(
             Text(text = "The Chase", style = MaterialTheme.typography.headlineLarge)
             Text(text = "Choose your answer: ")
         }
-        AnswerButton(modifier = Modifier.fillMaxWidth(), title = "A", color = Color.Black, onClick = { onAnswerClick("A") })
-        AnswerButton(modifier = Modifier.fillMaxWidth(), title = "B", color = Color.Black, onClick = { onAnswerClick("B") })
-        AnswerButton(modifier = Modifier.fillMaxWidth(), title = "C", color = Color.Black, onClick = { onAnswerClick("C") })
+        AnswerButton(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            title = "A",
+            color = Color.Black,
+            onClick = { onAnswerClick("A") }
+        )
+        AnswerButton(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            title = "B",
+            color = Color.Black,
+            onClick = { onAnswerClick("B") }
+        )
+        AnswerButton(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            title = "C",
+            color = Color.Black,
+            onClick = { onAnswerClick("C") }
+        )
     }
 }
 
