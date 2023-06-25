@@ -26,7 +26,7 @@ fun AnswerButton(
     color: Color,
     modifier: Modifier = Modifier,
     isActive: Boolean = true,
-    padding: Dp = 50.dp,
+    padding: Dp = 10.dp,
     onLongClick: () -> Unit = {},
     onClick: () -> Unit
 ) {

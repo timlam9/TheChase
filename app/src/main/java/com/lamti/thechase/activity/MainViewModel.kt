@@ -131,7 +131,7 @@ internal class MainViewModel(
         }
     }
 
-    fun onHostActionClick(action: String, questionID: Int? = null) {
+    fun onHostActionClick(action: String, questionID: Int? = null, timer: Int) {
         viewModelScope.launch {
             socket.sendMessage(
                 SocketMessage.OutBound.HostAction(
@@ -146,9 +146,18 @@ internal class MainViewModel(
                         "move_chaser_back" -> GameAction.MOVE_CHASER_BACK
                         "change_player" -> GameAction.CHANGE_PLAYER
                         "play_intro" -> GameAction.PLAY_INTRO
+                        "start_final" -> GameAction.START_FINAL
+                        "add_chaser_final_point" -> GameAction.ADD_CHASER_FINAL_POINT
+                        "add_player_final_point" -> GameAction.ADD_PLAYER_FINAL_POINT
+                        "remove_chaser_final_point" -> GameAction.REMOVE_CHASER_FINAL_POINT
+                        "remove_player_final_point" -> GameAction.REMOVE_PLAYER_FINAL_POINT
+                        "pause_final_timer" -> GameAction.PAUSE_FINAL_TIMER
+                        "resume_final_timer" -> GameAction.RESUME_FINAL_TIMER
+                        "reset_final_timer" -> GameAction.RESET_FINAL_TIMER
                         else -> GameAction.NEXT_QUESTION
                     },
-                    questionID = questionID
+                    questionID = questionID,
+                    timer = timer
                 )
             )
         }

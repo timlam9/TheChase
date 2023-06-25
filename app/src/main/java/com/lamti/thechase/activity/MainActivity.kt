@@ -79,8 +79,8 @@ internal class MainActivity : ComponentActivity() {
                         )
 
                         HOST_SCREEN -> HostScreen(
-                            onHostActionClick = { action, questionID ->
-                                viewModel.onHostActionClick(action, questionID)
+                            onHostActionClick = { action, questionID, timer ->
+                                viewModel.onHostActionClick(action, questionID, timer)
                             }
                         )
 
