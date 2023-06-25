@@ -20,8 +20,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 
@@ -36,6 +39,9 @@ class WebSocket(
     private val _socketSoundsEventChannel: Channel<ChaseSoundEvent> = Channel()
     val socketSoundEvents: Flow<ChaseSoundEvent>
         get() = _socketSoundsEventChannel.receiveAsFlow().flowOn(dispatcher)
+
+    private var _chaseState = MutableStateFlow(ChaseState())
+    val chaseState = _chaseState.asStateFlow()
 
     fun openConnection(token: String, email: String) {
         socketConnectJob = Job()
@@ -81,7 +87,7 @@ class WebSocket(
             if (frame is Frame.Text) {
                 val receivedText = frame.readText()
 
-                observeSoundSocketEvents(receivedText)
+                observeInboundSocketMessages(receivedText)
                 Log.d("SOCKET", "Frame text received: $receivedText")
             } else {
                 Log.d("SOCKET", "- - - - - - - - - - > Unknown Message received: $frame")
@@ -89,12 +95,13 @@ class WebSocket(
         }
     }
 
-    private fun observeSoundSocketEvents(receivedText: String) {
+    private fun observeInboundSocketMessages(receivedText: String) {
         try {
             val jsonObject = JsonParser.parseString(receivedText).asJsonObject
 
             val type = when (jsonObject.get("type").asString) {
                 "event" -> SocketMessage.InBound.Event::class.java
+                "state" -> SocketMessage.InBound.State::class.java
                 else -> SocketMessage.InBound::class.java
             }
 
@@ -103,6 +110,7 @@ class WebSocket(
 
             when (payload) {
                 is SocketMessage.InBound.Event -> sendSocketSoundEvent(payload.event)
+                is SocketMessage.InBound.State -> _chaseState.update { payload.chaseState }
                 is SocketMessage.InBound.SocketError -> TODO()
             }
         } catch (e: Exception) {

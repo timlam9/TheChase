@@ -10,10 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lamti.thechase.ui.components.HomeButton
+import com.lamti.thechase.ui.theme.ChaseBlue
+import com.lamti.thechase.ui.theme.ChaseDarkGray
+import com.lamti.thechase.ui.theme.ChaseRed
 import com.lamti.thechase.ui.theme.TheChaseTheme
 
 @Composable
@@ -35,11 +37,11 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "The Chase", style = MaterialTheme.typography.headlineLarge)
-            Text(text = "What are u?")
+            Text(text = "Who are u?")
         }
-        HomeButton(title = "Host", color = Color.Black, onClick = onHostClick)
-        HomeButton(title = "Player", color = Color.Blue, onClick = onPlayerClick)
-        HomeButton(title = "Chaser", color = Color.Red, onClick = onChaserClick)
+        HomeButton(title = "Host", color = ChaseDarkGray, onClick = onHostClick)
+        HomeButton(title = "Player", color = ChaseBlue, onClick = onPlayerClick)
+        HomeButton(title = "Chaser", color = ChaseRed, onClick = onChaserClick)
     }
 }
 

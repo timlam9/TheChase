@@ -74,7 +74,11 @@ internal class MainActivity : ComponentActivity() {
                             }
                         )
 
-                        ANSWER_SCREEN -> AnswerScreen(state.user, viewModel::onAnswerClick)
+                        ANSWER_SCREEN -> AnswerScreen(
+                            hasAnswered = state.answer != "",
+                            user = state.user,
+                            onAnswerClick = viewModel::onAnswerClick
+                        )
                     }
                 }
             }

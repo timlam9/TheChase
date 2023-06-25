@@ -12,15 +12,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lamti.thechase.activity.MainView.UiState
 import com.lamti.thechase.ui.components.AnswerButton
+import com.lamti.thechase.ui.theme.ChaseBlue
+import com.lamti.thechase.ui.theme.ChaseGray
+import com.lamti.thechase.ui.theme.ChaseRed
 import com.lamti.thechase.ui.theme.TheChaseTheme
 
 @Composable
 internal fun AnswerScreen(
+    hasAnswered: Boolean = false,
     user: UiState.User = UiState.User.NONE,
     onAnswerClick: (answer: String) -> Unit = {}
 ) {
@@ -29,8 +32,8 @@ internal fun AnswerScreen(
             .fillMaxSize()
             .background(
                 when (user) {
-                    UiState.User.PLAYER -> Color.Blue
-                    UiState.User.CHASER -> Color.Red
+                    UiState.User.PLAYER -> ChaseBlue
+                    UiState.User.CHASER -> ChaseRed
                     else -> MaterialTheme.colorScheme.background
                 }
             )
@@ -43,33 +46,33 @@ internal fun AnswerScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "The Chase", style = MaterialTheme.typography.headlineLarge)
+            Text(text = user.name, style = MaterialTheme.typography.headlineLarge)
             Text(text = "Choose your answer: ")
         }
         AnswerButton(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
+            isActive = !hasAnswered,
             title = "A",
-            color = Color.Black,
-            onClick = { onAnswerClick("A") }
-        )
-        AnswerButton(
+            color = ChaseGray,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+        ) { onAnswerClick("A") }
+        AnswerButton(
+            isActive = !hasAnswered,
             title = "B",
-            color = Color.Black,
-            onClick = { onAnswerClick("B") }
-        )
-        AnswerButton(
+            color = ChaseGray,
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+        ) { onAnswerClick("B") }
+        AnswerButton(
+            isActive = !hasAnswered,
             title = "C",
-            color = Color.Black,
-            onClick = { onAnswerClick("C") }
-        )
+            color = ChaseGray,
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) { onAnswerClick("C") }
     }
 }
 

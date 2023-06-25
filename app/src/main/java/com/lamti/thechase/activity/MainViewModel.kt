@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.lamti.thechase.activity.MainView.UiState
 import com.lamti.thechase.data.Repository
 import com.lamti.thechase.data.models.ChaseSoundEvent
+import com.lamti.thechase.data.websocket.ChaseState
 import com.lamti.thechase.data.websocket.GameAction
+import com.lamti.thechase.data.websocket.GameQuestionOption
 import com.lamti.thechase.data.websocket.SocketMessage
 import com.lamti.thechase.data.websocket.WebSocket
 import com.lamti.thechase.toEmail
@@ -15,7 +17,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,6 +37,29 @@ internal class MainViewModel(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed()
     )
+
+    val chaseState: StateFlow<ChaseState> = socket.chaseState
+
+    init {
+        chaseState.onEach { serverState ->
+            val playerHasAnswered =
+                serverState.currentQuestion.options.firstOrNull { it.selectedBy == GameQuestionOption.SelectedBy.PLAYER } != null
+            val chaserHasAnswered =
+                serverState.currentQuestion.options.firstOrNull { it.selectedBy == GameQuestionOption.SelectedBy.CHASER } != null
+            val bothHaveAnswered =
+                serverState.currentQuestion.options.firstOrNull { it.selectedBy == GameQuestionOption.SelectedBy.BOTH } != null
+
+            val shouldResetPlayerAnswer =
+                _uiState.value.user == UiState.User.PLAYER && !playerHasAnswered && !bothHaveAnswered
+            val shouldResetChaserAnswer =
+                _uiState.value.user == UiState.User.CHASER && !chaserHasAnswered && !bothHaveAnswered
+
+            if (shouldResetPlayerAnswer || shouldResetChaserAnswer) {
+                _uiState.update { it.copy(answer = "") }
+            }
+
+        }.launchIn(viewModelScope)
+    }
 
     fun onHostClick() {
         viewModelScope.launch {

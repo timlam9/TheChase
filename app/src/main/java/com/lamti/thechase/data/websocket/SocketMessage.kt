@@ -28,41 +28,7 @@ sealed class SocketMessage {
         data class SocketError(val type: String = "socket_error", val errorType: String) : InBound()
 
         data class Event(val type: String = "event", val event: ChaseSoundEvent) : InBound()
+
+        data class State(val type: String = "state", val chaseState: ChaseState) : InBound()
     }
-}
-
-data class GameQuestionOption(
-    val title: String,
-    val position: Position,
-    val selectedBy: SelectedBy,
-    val isRightAnswer: Boolean
-) {
-    enum class Position {
-
-        A,
-        B,
-        C
-    }
-
-    enum class SelectedBy {
-
-        CHASER,
-        PLAYER,
-        NONE
-    }
-}
-
-enum class GameAction {
-
-    START,
-    SHOW_PLAYER_ANSWER,
-    SHOW_CHASER_ANSWER,
-    SHOW_RIGHT_ANSWER,
-    MOVE_PLAYER,
-    MOVE_PLAYER_BACK,
-    MOVE_CHASER,
-    MOVE_CHASER_BACK,
-    NEXT_QUESTION,
-    CHANGE_PLAYER,
-    PLAY_INTRO
 }
