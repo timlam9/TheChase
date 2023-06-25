@@ -16,9 +16,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.lamti.thechase.AudioPlayer
+import com.lamti.thechase.R
 import com.lamti.thechase.activity.MainView.*
 import com.lamti.thechase.activity.MainView.UiState.*
 import com.lamti.thechase.activity.MainView.UiState.Screen.*
+import com.lamti.thechase.data.models.ChaseSoundEvent
+import com.lamti.thechase.data.models.ChaseSoundEvent.CHANGE_PLAYER
+import com.lamti.thechase.data.models.ChaseSoundEvent.CHASER_WINS
+import com.lamti.thechase.data.models.ChaseSoundEvent.INTRO
+import com.lamti.thechase.data.models.ChaseSoundEvent.PLAYER_WINS
+import com.lamti.thechase.data.models.ChaseSoundEvent.QUESTION_APPEAR
+import com.lamti.thechase.data.models.ChaseSoundEvent.QUESTION_COUNTDOWN
+import com.lamti.thechase.data.models.ChaseSoundEvent.STOP_QUESTION_COUNTDOWN
 import com.lamti.thechase.toAudioRes
 import com.lamti.thechase.ui.screens.AnswerScreen
 import com.lamti.thechase.ui.screens.HomeScreen
@@ -46,7 +55,7 @@ internal class MainActivity : ComponentActivity() {
                             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                                 viewModel.socketSoundEvents.onEach { event ->
                                     Log.d("AUDIO_EVENT_LOG", "Play audio from event: $event")
-                                    audioPlayer.playSound(event.toAudioRes())
+                                    event.playAudio()
                                 }.launchIn(this)
                             }
                         }
@@ -69,6 +78,23 @@ internal class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun ChaseSoundEvent.playAudio() {
+        when (this) {
+            QUESTION_APPEAR -> {
+                audioPlayer.playSound(toAudioRes())
+                audioPlayer.playBackgroundMusic(R.raw.chase_question_round)
+            }
+
+            QUESTION_COUNTDOWN -> audioPlayer.playBackgroundMusic(R.raw.five_sec_countdown)
+            STOP_QUESTION_COUNTDOWN -> audioPlayer.stopMusic()
+            INTRO -> audioPlayer.playBackgroundMusic(R.raw.intro)
+            CHANGE_PLAYER -> audioPlayer.playBackgroundMusic(R.raw.inbetween_contestants)
+            CHASER_WINS -> audioPlayer.playBackgroundMusic(R.raw.chaser_catch)
+            PLAYER_WINS -> audioPlayer.playBackgroundMusic(R.raw.contestant_win)
+            else -> audioPlayer.playSound(toAudioRes())
         }
     }
 

@@ -6,6 +6,7 @@ enum class ChaseSoundEvent {
     PRE_GAME,
     QUESTION,
     QUESTION_COUNTDOWN,
+    STOP_QUESTION_COUNTDOWN,
     CHASER_WINS,
     PLAYER_WINS,
     CHANGE_PLAYER,

@@ -53,7 +53,35 @@ fun HostScreen(onHostActionClick: (answer: String, question: Int?) -> Unit = { _
                 .fillMaxWidth(),
             title = "Go to Question $questionID",
             color = Color.DarkGray,
-            onClick = { onHostActionClick("start", questionID.toIntOrNull()) })
+            onClick = { onHostActionClick("start", questionID.toIntOrNull()) }
+        )
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .padding(vertical = 20.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AnswerButton(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                title = "Play Intro",
+                padding = 10.dp,
+                color = Color.DarkGray,
+                onClick = { onHostActionClick("play_intro", null) },
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            AnswerButton(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                title = "Change Player",
+                padding = 10.dp,
+                color = Color.DarkGray,
+                onClick = { onHostActionClick("change_player", null) }
+            )
+        }
         Row(
             modifier = Modifier
                 .weight(1f)

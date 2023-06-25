@@ -116,6 +116,8 @@ internal class MainViewModel(
                         "move_player_back" -> GameAction.MOVE_PLAYER_BACK
                         "move_chaser" -> GameAction.MOVE_CHASER
                         "move_chaser_back" -> GameAction.MOVE_CHASER_BACK
+                        "change_player" -> GameAction.CHANGE_PLAYER
+                        "play_intro" -> GameAction.PLAY_INTRO
                         else -> GameAction.NEXT_QUESTION
                     },
                     questionID = questionID

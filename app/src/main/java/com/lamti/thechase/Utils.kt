@@ -21,6 +21,7 @@ internal fun ChaseSoundEvent.toAudioRes(): Int = when(this) {
     ChaseSoundEvent.PLAYER_MOVE -> R.raw.contestant_moves_down_board
     ChaseSoundEvent.QUESTION_APPEAR -> R.raw.question_appear
     ChaseSoundEvent.CORRECT_ANSWER -> R.raw.correct_answer
+    ChaseSoundEvent.STOP_QUESTION_COUNTDOWN -> R.raw.five_sec_countdown
 }
 
 internal fun MainView.UiState.User.toEmail() = when (this) {
