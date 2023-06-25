@@ -1,7 +1,11 @@
 package com.lamti.thechase.activity
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +16,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -43,7 +51,9 @@ internal class MainActivity : ComponentActivity() {
     private lateinit var audioPlayer: AudioPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setFullscreen()
         super.onCreate(savedInstanceState)
+
         setContent {
             TheChaseTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -121,5 +131,30 @@ internal class MainActivity : ComponentActivity() {
 
         audioPlayer.stopSound()
         audioPlayer.stopMusic()
+    }
+
+    private fun setFullscreen() {
+        val windowInsetsController: WindowInsetsControllerCompat? =
+            ViewCompat.getWindowInsetsController(window.decorView)
+        windowInsetsController?.hide(WindowInsetsCompat.Type.systemBars())
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        hideSystemUI()
+    }
+
+    private fun hideSystemUI() {
+        //Hides the ugly action bar at the top
+        actionBar?.hide()
+
+        //Hide the status bars
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        } else {
+            window.insetsController?.apply {
+                hide(WindowInsets.Type.statusBars())
+                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
     }
 }
